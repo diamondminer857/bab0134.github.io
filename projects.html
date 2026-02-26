@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Projects | Maxmilián Babič</title>
+    <style>
+
+        :root {
+            --bg-color: #0f172a;      
+            --text-main: #f8fafc;     
+            --text-muted: #94a3b8;    
+            --btn-bg: #1e293b;        
+            --btn-hover: #334155;     
+            --accent: #38bdf8;        
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            max-width: 1000px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .btn-back {
+            padding: 0.6rem 1.2rem;
+            background-color: transparent;
+            color: var(--accent);
+            text-decoration: none;
+            border-radius: 8px;
+            border: 1px solid var(--accent);
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn-back:hover {
+            background-color: var(--accent);
+            color: var(--bg-color);
+        }
+
+        .grid-container {
+            max-width: 1000px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px; 
+        }
+
+        .card {
+            background-color: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .card h2 {
+            margin: 0 0 5px 0;
+            font-size: 1.4rem;
+            color: var(--text-main);
+        }
+
+        .card p.desc {
+            margin: 0 0 20px 0;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .project-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        .btn-project {
+            padding: 0.8rem;
+            background-color: var(--btn-bg);
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .btn-project:hover {
+            background-color: var(--btn-hover);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>My Projects</h1>
+        <a href="./index.html" class="btn-back">← Home</a>
+    </div>
+
+    <div class="grid-container">
+
+        <div class="card">
+            <h2>Virtualization I</h2>
+            <p class="desc">Projects</p>
+            <div class="project-links">
+                <a href="#" class="btn-project">📱 Project 1: SMB</a>
+                <a href="#" class="btn-project">🛠️ Project 2: Docker/LXC/LXD</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>PKS I</h2>
+            <p class="desc">Projects</p>
+            <div class="project-links">
+                <a href="#" class="btn-project">🌐 Project 1: NFS</a>
+                <a href="#" class="btn-project">n/a</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>App development for Mobile devices</h2>
+            <p class="desc">Homework</p>
+            <div class="project-links">
+                <a href="#" class="btn-project">🔢 Homework 1</a>
+            </div>
+        </div>
+
+
+        <div class="card">
+            <h2>Databases</h2>
+            <p class="desc">SQL queries and database design.</p>
+            <div class="project-links">
+                <a href="#" class="btn-project">🗄️ Task 1: ER Diagram</a>
+                <a href="#" class="btn-project">📊 Task 2: Queries</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Software Engineering</h2>
+            <p class="desc">UML diagrams and project documentation.</p>
+            <div class="project-links">
+                <a href="#" class="btn-project">📝 Document: Requirements</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Extra Projects</h2>
+            <p class="desc">My personal side-hustles and experiments.</p>
+            <div class="project-links">
+                <a href="#" class="btn-project">🚀 Experiment 1</a>
+                <a href="#" class="btn-project">🎮 Mini Game</a>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
