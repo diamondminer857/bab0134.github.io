@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Termíny a Kalendář</title>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" rel="stylesheet">
+</head>
+
+<body>
+    <ion-app>
+        <ion-header>
+            <ion-toolbar>
+                <ion-title>Termíny</ion-title>
+            </ion-toolbar>
+        </ion-header>
+
+        <ion-content class="ion-padding" color="light">
+
+            <ion-card>
+                <ion-card-content>
+                    <ion-text style="display: block; font-size:110%; padding-bottom: 5px; font-weight: bold;">
+                        <span id="actualDate">Dnešní datum: </span>
+                    </ion-text>
+                </ion-card-content>
+            </ion-card>
+
+            <ion-card>
+                <ion-card-header>
+                    <ion-card-title style="font-size: 110%;">Průběh semestru</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    <ion-progress-bar id="semesterProgress" value="0" color="primary"></ion-progress-bar>
+                    <p id="semesterText" style="text-align: center; margin-top: 10px; color: gray;"></p>
+                </ion-card-content>
+            </ion-card>
+
+            <ion-card>
+                <ion-card-header>
+                    <ion-card-title>Důležité termíny</ion-card-title>
+                    <ion-card-subtitle>Vzhledem ke zvolenému datu</ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content id="seznam-terminu">
+                    </ion-card-content>
+            </ion-card>
+
+            <ion-card>
+                <ion-card-header>
+                    <ion-card-title style="font-size: 110%;">Zadej datum</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    <div style="text-align: center; padding-bottom: 10px;">
+                        <ion-datetime-button datetime="datetime"></ion-datetime-button>
+                        <ion-modal>
+                            <ion-datetime id="datetime" locale="cs-CZ" presentation="date" show-default-buttons="true"></ion-datetime>
+                        </ion-modal>
+                    </div>
+                    <ion-text id="selectedDate" style="display: block; font-size:100%; text-align: center; color: gray;">
+                        Zvolené datum: Dnes
+                    </ion-text>
+                </ion-card-content>
+            </ion-card>
+
+            <ion-card>
+                <ion-card-header>
+                    <ion-card-title>Léto začne za</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    <ion-text color="primary">
+                        <h2 id="countdownTimer" style="font-family: monospace; font-size: 1.5em; text-align: left; margin: 0;">
+                            Načítám...
+                        </h2>
+                    </ion-text>
+                </ion-card-content>
+            </ion-card>
+
+        </ion-content>
+    </ion-app>
+
+    <script>
+        // 1. Nastavení základních proměnných a dat
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        // Zobrazení dnešního data do první karty
+        document.getElementById("actualDate").innerHTML = `Dnešní datum: ${today.toLocaleDateString('cs-CZ')}`;
+
+        // Data pro semestr (přizpůsob si podle skutečnosti)
+        const semesterStart = new Date('2026-02-16');
+        const semesterEnd = new Date('2026-05-01');
+
+        // Naše databáze událostí
+        const events = [
+            { name: 'Otevření Lidl Outletu Ostrava', date: new Date('2026-03-02') },
+            { name: 'Dovolená Turecko', date: new Date('2026-07-27') }, 
+            { name: 'Vánoce', date: new Date('2026-12-24') },
+            { name: 'Odevzdání úkolu', date: new Date('2026-03-05') }
+        ];
+
+        // Pomocná funkce na výpočet dnů mezi dvěma daty
+        function getDaysDiff(fromDate, toDate) {
+            const msPerDay = 1000 * 60 * 60 * 24;
+            const utc1 = Date.UTC(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate());
+            const utc2 = Date.UTC(toDate.getFullYear(), toDate.getMonth(), toDate.getDate());
+            return Math.floor((utc2 - utc1) / msPerDay);
+        }
+
+        // Pomocná funkce pro získání barvy (TODO 2)
+        function getColor(days) {
+            if (days < 0) return 'medium';
+            if (days <= 7) return 'danger';
+            if (days < 30) return 'warning'; 
+            return 'success';
+        }
+
+        // Funkce, která vykreslí události vzhledem k zadanému datu
+        function renderEvents(baseDate) {
+            const container = document.getElementById('seznam-terminu');
+            container.innerHTML = '';
+            
+            events.forEach(ev => {
+                const daysLeft = getDaysDiff(baseDate, ev.date);
+                const colorName = getColor(daysLeft);
+                
+                container.innerHTML += `
+                    <div style="margin-bottom: 12px;">
+                        <ion-text color="${colorName}">
+                            <h3 style="margin: 0; font-size: 110%;">${ev.name}</h3>
+                            <p style="margin: 0; font-size: 90%;">Počet dnů: ${daysLeft}</p>
+                        </ion-text>
+                    </div>
+                `;
+            });
+        }
+
+        // TODO 3: Výpočet průběhu semestru
+        function renderSemesterProgress() {
+            const totalSemDays = getDaysDiff(semesterStart, semesterEnd);
+            const passedSemDays = getDaysDiff(semesterStart, today);
+            
+            let progress = passedSemDays / totalSemDays;
+            if (progress < 0) progress = 0;
+            if (progress > 1) progress = 1;
+
+            document.getElementById('semesterProgress').value = progress;
+            document.getElementById('semesterText').innerText = 
+                `${Math.round(progress * 100)} % (${passedSemDays} / ${totalSemDays} dnů)`;
+        }
+
+            // TODO 4: Toast upozornění na blízké termíny po načtení
+        async function checkCloseEvents() {
+        // Najdeme události, které jsou v budoucnosti, ale max 7 dní od DNEŠKA
+        const closeEvents = events.filter(ev => {
+            const days = getDaysDiff(today, ev.date);
+            return days >= 0 && days <= 7;
+        });
+
+        if (closeEvents.length > 0) {
+            await customElements.whenDefined('ion-toast');
+
+            
+            const toast = document.createElement('ion-toast');
+            const eventNames = closeEvents.map(e => e.name).join(', ');
+            
+            toast.message = `Blíží se termíny: ${eventNames}`;
+            toast.duration = 4000;
+            toast.color = 'danger';
+            toast.position = 'bottom';
+            
+            document.body.appendChild(toast);
+            await toast.present();
+        }
+}
+
+        function startSummerCountdown() {
+            const summerDate = new Date('2026-06-21T00:00:00');
+            
+            setInterval(() => {
+                const now = new Date();
+                const diffMs = summerDate - now;
+
+                if(diffMs < 0) {
+                    document.getElementById('countdownTimer').innerText = "Léto už začalo! ☀️";
+                    return;
+                }
+
+                const d = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+                document.getElementById('countdownTimer').innerText = `${d}d ${h}h ${m}m ${s}s`;
+            }, 1000);
+        }
+
+        renderEvents(today);
+        renderSemesterProgress();
+        checkCloseEvents();
+        startSummerCountdown();
+
+        let dateTimeHtml = document.getElementById('datetime');
+        dateTimeHtml.addEventListener("ionChange", function (e) {
+            let selected = new Date(this.value);
+            selected.setHours(0, 0, 0, 0);
+            
+            const daysFromToday = getDaysDiff(today, selected);
+            let diffText = "";
+            if (daysFromToday === 0) diffText = "Dnes";
+            else if (daysFromToday > 0) diffText = `(za ${daysFromToday} dnů)`;
+            else diffText = `(před ${Math.abs(daysFromToday)} dny)`;
+
+            document.getElementById("selectedDate").innerHTML = 
+                `Zvolené datum: <br><b>${selected.toLocaleDateString('cs-CZ')}</b> ${diffText}`;
+
+            renderEvents(selected);
+        });
+
+    </script>
+</body>
+</html>
