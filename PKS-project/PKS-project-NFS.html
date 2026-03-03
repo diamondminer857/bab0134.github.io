@@ -173,6 +173,26 @@ sudo mkdir -p /mnt/shared_folder</code></pre>
             
             <h3>4. Výpis přístupových práv k přenesenému souboru (Server)</h3>
             <img src="screen4.png" alt="Výpis práv souboru" style="max-width: 100%; border: 1px solid #ccc; border-radius: 5px;">
+
+            <div style="background-color: #f1f5f9; padding: 1rem; border-left: 4px solid #0284c7; margin-top: 1rem; border-radius: 4px;">
+                <strong>Vysvětlení výpisu oprávnění (<code>-rw-rw-r--</code>):</strong>
+                <ul style="margin-bottom: 0; margin-top: 0.5rem;">
+                    <li><strong>rw- (Vlastník):</strong> Uživatel <code>student</code> má právo soubor číst (<strong>r</strong>ead) i upravovat (<strong>w</strong>rite).</li>
+                    <li><strong>rw- (Skupina):</strong> Členové skupiny <code>student</code> mohou také číst a upravovat.</li>
+                    <li><strong>r-- (Ostatní):</strong> Všichni ostatní uživatelé v systému mají k souboru právo pouze pro čtení (<strong>r</strong>ead), nemohou ho smazat ani přepsat.</li>
+                </ul>
+            </div>
+            
+            <h3>5. Pohled běžného uživatele (Grafické rozhraní)</h3>
+            <p>NFS sdílení je pro koncového uživatele (klienta) zcela transparentní. Nasdílená složka se v Linuxovém správci souborů chová jako jakýkoliv jiný lokální disk. Zde je ukázka vytvoření dokumentu administrátorem na serveru a jeho okamžité zobrazení u klienta.</p>
+            
+            <h3>6. Vytvoření souboru na serveru</h3>
+            <img src="./screen5.png" alt="Vytvoření souboru na serveru" style="max-width: 100%; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 1.5rem;">
+            
+            <h3>7. Okamžitá dostupnost souboru pro klienta ve File Manageru</h3>
+            <img src="./screen6.png" alt="Ukázka ve File Manageru" style="max-width: 100%; border: 1px solid #ccc; border-radius: 5px;">
+        
+        
         </section>
 
         <section id="literatura">
